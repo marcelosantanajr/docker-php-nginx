@@ -30,7 +30,7 @@ ENV XDEBUG_VERSION=3.0.2
 ENV MONGODB_VERSION=1.10.0alpha1
 ENV REDIS_VERSION=5.3.4
 ENV COMPOSER_VERSION=2.1.3
-ENV GIT_VERSION=2.34.1-r0
+ENV GIT_VERSION=2.38.2-r0
 
 RUN apk update && apk add --no-cache --update \
     $PHPIZE_DEPS \
@@ -91,10 +91,7 @@ RUN docker-php-ext-install pdo \
     && docker-php-ext-install ldap \
     && docker-php-ext-install pdo_dblib \
     && docker-php-ext-install xsl \
-    && docker-php-ext-install opcache \
-    && docker-php-ext-install tokenizer \
-    && docker-php-ext-install iconv \
-    && docker-php-ext-install exif
+    && docker-php-ext-install opcache
 
 # Installing GD extension
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
@@ -118,25 +115,11 @@ RUN pecl install -o -f yaml && docker-php-ext-enable yaml
 # Installing Mcrypt extension
 RUN pecl install -o -f mcrypt && docker-php-ext-enable mcrypt
 
-# Installing Mongodb extension
-RUN mkdir -p /usr/src/php/ext/mongodb \
-    && curl -fsSL https://pecl.php.net/get/mongodb-${MONGODB_VERSION} | tar xvz -C "/usr/src/php/ext/mongodb" --strip 1 \
-    && docker-php-ext-install mongodb
-
 # Installing Redis extension
 RUN pecl install -o -f redis-${REDIS_VERSION} && docker-php-ext-enable redis
 
 # Installing XDebug
 RUN pecl install -o -f xdebug-${XDEBUG_VERSION} && docker-php-ext-enable xdebug
-
-# Installing AMQP
-RUN docker-php-source extract \
-    && apk -Uu add git rabbitmq-c-dev \
-    && git clone --branch master --depth 1 https://github.com/php-amqp/php-amqp.git /usr/src/php/ext/amqp \
-    && cd /usr/src/php/ext/amqp \
-    && git submodule update --init \
-    && docker-php-ext-install amqp \
-    && docker-php-ext-enable amqp
 
 RUN apk del $PHPIZE_DEPS && rm -rf /var/cache/apk/*
 

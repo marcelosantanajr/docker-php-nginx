@@ -1,4 +1,4 @@
-FROM marcelosantanajr/php:8.1
+FROM santanacode/php:8.1
 LABEL maintainer=contato@marcelosantana.com \
       vendor=TMakers
 
