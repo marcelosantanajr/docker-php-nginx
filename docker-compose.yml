@@ -1,0 +1,43 @@
+version: '3.5'
+services:
+  app-74:
+    container_name: marcelosantanajr-php7
+    image: marcelosantanajr/php-nginx-dev:7.4
+    ports:
+      - "8080:80"
+      - "4431:443"
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - marcelosantanajr-network
+    environment:
+      - NGINX_DOCUMENT_ROOT=/var/www/html/webroot
+
+  app-80:
+    container_name: marcelosantanajr-php8
+    image: marcelosantanajr/php-nginx-dev:8.0
+    ports:
+      - "8081:80"
+      - "4432:443"
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - marcelosantanajr-network
+    environment:
+      - NGINX_DOCUMENT_ROOT=/var/www/html/webroot
+
+  app-81:
+    container_name: marcelosantanajr-php81
+    image: marcelosantanajr/php-nginx-dev:8.1
+    ports:
+      - "8081:80"
+      - "4432:443"
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - marcelosantanajr-network
+    environment:
+      - NGINX_DOCUMENT_ROOT=/var/www/html/webroot
+networks:
+  marcelosantanajr-network:
+    driver: bridge
